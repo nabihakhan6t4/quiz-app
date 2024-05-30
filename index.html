@@ -7,19 +7,39 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app">
-      <h1>quiz app</h1>
-      <div class="quiz">
-        <h2 id="question"> question goes here</h2>
-        <div class="answer-buttons">
-          <button class="btn"> answwer 1</button>
-          <button class="btn"> answwer 2</button>
-          <button class="btn"> answwer 3</button>
-          <button class="btn"> answwer 4</button> 
-        </div>
-        <button id="next-btn">next</button>
-      </div>
+
+<div class="container">
+  <h2>Quiz App</h2>
+  <div id="quiz">
+    <div id="question1" class="question">1. What is the capital of France?</div>
+    <div id="options1" class="options">
+      <label><input type="radio" name="q1" value="a">a) London</label>
+      <label><input type="radio" name="q1" value="b">b) Paris</label>
+      <label><input type="radio" name="q1" value="c">c) Berlin</label>
+      <label><input type="radio" name="q1" value="d">d) Madrid</label>
     </div>
-  <script src="script.js"></script>
+    <div id="question2" class="question" style="display:none;">2. What is the powerhouse of the cell?</div>
+    <div id="options2" class="options" style="display:none;">
+      <label><input type="radio" name="q2" value="a">a) Mitochondria</label>
+      <label><input type="radio" name="q2" value="b">b) Nucleus</label>
+      <label><input type="radio" name="q2" value="c">c) Ribosome</label>
+      <label><input type="radio" name="q2" value="d">d) Golgi Apparatus</label>
+    </div>
+    <div id="question3" class="question" style="display:none;">3. What is the largest ocean on Earth?</div>
+    <div id="options3" class="options" style="display:none;">
+      <label><input type="radio" name="q3" value="a">a) Atlantic Ocean</label>
+      <label><input type="radio" name="q3" value="b">b) Indian Ocean</label>
+      <label><input type="radio" name="q3" value="c">c) Pacific Ocean</label>
+      <label><input type="radio" name="q3" value="d">d) Arctic Ocean</label>
+    </div>
+    <hr>
+    <button id="nextBtn" class="btn" onclick="nextQuestion()">Next</button>
+    <button id="submitBtn" class="btn" style="display:none;" onclick="submitQuiz()">Submit</button>
+    <div id="result"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

@@ -1,56 +1,29 @@
-const questions = [
-  {
-    question : "What does the <meta> tag specify?",
-    answers :[
-      { text : "Metadata" , correct: true},
-      { text : "Content" , correct: false},
-      { text : "Structure" , correct: false},
-      { text : "Styling" , correct: false},
-    ]
-  },
-  {
-    question : "What property creates space inside an element?",
-    answers :[
-      { text : "Margin" , correct: false},
-      { text : "Content" , correct: false},
-      { text : "padding" , correct: true},
-      { text : "over-flow" , correct: false},
-    ]
-  },
-  {
-    question : "What is Bootstrap primarily used for?",
-    answers :[
-      { text : "Database management" , correct: false},
-      { text : "Server-side scripting" , correct: false},
-      { text : "Back-end development" , correct: false},
-      { text : "Front-end" , correct: true},
-    ]
+let currentQuestion = 1;
+const totalQuestions = 3; // Update this according to the total number of questions
+
+function nextQuestion() {
+  const currentQuestionElement = document.getElementById(`question${currentQuestion}`);
+  const currentOptionsElement = document.getElementById(`options${currentQuestion}`);
+  const nextQuestionElement = document.getElementById(`question${currentQuestion + 1}`);
+  const nextOptionsElement = document.getElementById(`options${currentQuestion + 1}`);
+  const resultElement = document.getElementById('result');
+  const selectedOption = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+
+  if (!selectedOption) {
+    resultElement.innerText = "Please select an option.";
+    return;
   }
-];
-const questionElement = document.getElementById("question");
-const answerbutton = document.getElementById("answer-buton");
-const nextbutton = document.getElementById("next-btn");
 
-let  currentQuestionIndex = 0;
-let score = 0;
+  resultElement.innerText = '';
 
-function startQuiz(){
-  currentQuestionIndex = 0;
-  score = 0;
-  nextbutton.innerHTML = "next";
-  showQuestion();
+  currentQuestionElement.style.display = 'none';
+  currentOptionsElement.style.display = 'none';
+
+  if (currentQuestion < totalQuestions) {
+    nextQuestionElement.style.display = 'block';
+    nextOptionsElement.style.display = 'block';
+    currentQuestion++;
+  } else {
+    resultElement.innerText = "Quiz completed!"; // Or any other action after the last question
+  }
 }
-
-function startQuiz(){
-   let currentQuestionIndex = questions[currentQuestionIndex];
-   let questionNo = currentQuestionIndex + 1;
-  questionElement.innerHTML = questionNo + ". " + currentQuestion.
-  question;
-  currentQuestion.answers.forEach(answer => {
-    const button = document.createElement("button");
-    button.innerHTML = answer.text;
-    button.classList.add("btn");
-    answerButton.appendchild(button);
-  });
-}
-
