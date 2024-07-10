@@ -155,8 +155,12 @@ function displayResults() {
     const userAnswerIndex = userChoices[index];
     const correctAnswerIndex = question[5];
     const isCorrect = userAnswerIndex === correctAnswerIndex;
-    resultsHTML += `<div class="answer ${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                      <p><strong>Question ${index + 1}:</strong> ${question[0]}</p>
+    resultsHTML += `<div class="answer ${
+      isCorrect ? "correct-answer" : "incorrect-answer"
+    }">
+                      <p><strong>Question ${index + 1}:</strong> ${
+      question[0]
+    }</p>
                       <p>Your Answer: ${question[userAnswerIndex + 1]}</p>
                       <p>Correct Answer: ${question[correctAnswerIndex + 1]}</p>
                     </div>`;
@@ -171,10 +175,16 @@ function displayAnswersInModal() {
     const userAnswerIndex = userChoices[index];
     const correctAnswerIndex = question[5];
     const isCorrect = userAnswerIndex === correctAnswerIndex;
-    modalAnswersHTML += `<div class="answer ${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                          <p><strong>Question ${index + 1}:</strong> ${question[0]}</p>
+    modalAnswersHTML += `<div class="answer ${
+      isCorrect ? "correct-answer" : "incorrect-answer"
+    }">
+                          <p><strong>Question ${index + 1}:</strong> ${
+      question[0]
+    }</p>
                           <p>Your Answer: ${question[userAnswerIndex + 1]}</p>
-                          <p>Correct Answer: ${question[correctAnswerIndex + 1]}</p>
+                          <p>Correct Answer: ${
+                            question[correctAnswerIndex + 1]
+                          }</p>
                         </div>`;
   });
   modalAnswersElement.innerHTML = modalAnswersHTML;
@@ -219,19 +229,20 @@ function playSound(soundType) {
       break;
   }
 }
+playSound();
 
 initializeQuiz();
 
-viewAnswersButton.addEventListener("click", function() {
+viewAnswersButton.addEventListener("click", function () {
   answersModal.style.display = "block";
   displayAnswersInModal();
 });
 
-closeBtn.addEventListener("click", function() {
+closeBtn.addEventListener("click", function () {
   answersModal.style.display = "none";
 });
 
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function (event) {
   if (event.target === answersModal) {
     answersModal.style.display = "none";
   }
@@ -239,3 +250,4 @@ window.addEventListener("click", function(event) {
 
 submitButton.addEventListener("click", endQuiz);
 restartButton.addEventListener("click", restartQuiz);
+choiceButton.addEventListener("click", handleChoice);
