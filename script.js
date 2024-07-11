@@ -87,167 +87,120 @@ const timerHintElement = document.getElementById("timer-hint");
 const scoreDisplayElement = document.getElementById("score-display");
 const answersModal = document.getElementById("answers-modal");
 const modalAnswersElement = document.getElementById("modal-answers");
-const closeBtn = document.getElementsByClassName("close")[0];
 
-// Sound effects
-const correctSound = new Audio("correct.mp3");
-const incorrectSound = new Audio("incorrect.mp3");
+const correctSound = document.getElementById("correct-sound");
+const incorrectSound = document.getElementById("incorrect-sound");
+const timeoutSound = document.getElementById("timeout-sound");
 
 let currentQuestionIndex = 0;
-let userChoices = [];
 let score = 0;
-let timerSeconds = 60;
+const quizTimeInSeconds = 60;
+let timeLeft = quizTimeInSeconds;
 let timerInterval;
 
-function initializeQuiz() {
+function startQuiz() {
+  resetQuiz();
   showQuestion();
   startTimer();
 }
 
-function showQuestion() {
-  if (currentQuestionIndex < quizData.length) {
-    const currentQuestion = quizData[currentQuestionIndex];
-    quizTitleElement.textContent = "Kon Bnega Crorepati Quiz";
-    questionTextElement.textContent = currentQuestion[0];
-    choicesContainerElement.innerHTML = "";
-    for (let i = 1; i <= 4; i++) {
-      const choiceButton = document.createElement("button");
-      choiceButton.classList.add("choice");
-      choiceButton.textContent = currentQuestion[i];
-      choiceButton.setAttribute("data-index", i - 1);
-      choiceButton.addEventListener("click", handleChoice);
-      choicesContainerElement.appendChild(choiceButton);
-    }
-  } else {
-    endQuiz();
-  }
-}
-
-function handleChoice(event) {
-  const selectedChoiceIndex = parseInt(event.target.getAttribute("data-index"));
-  userChoices.push(selectedChoiceIndex);
-
-  const correctAnswerIndex = quizData[currentQuestionIndex][5];
-  if (selectedChoiceIndex === correctAnswerIndex) {
-    score++;
-    playSound("correct");
-  } else {
-    playSound("incorrect");
-  }
-
-  currentQuestionIndex++;
-  showQuestion();
-}
-
-function endQuiz() {
-  clearInterval(timerInterval);
-  timerHintElement.style.display = "none";
-  resultsContainer.style.display = "block";
-  submitButton.style.display = "none";
-  restartButton.style.display = "inline-block";
-  viewAnswersButton.style.display = "inline-block";
-  displayResults();
-}
-
-function displayResults() {
-  let resultsHTML = "";
-  quizData.forEach((question, index) => {
-    const userAnswerIndex = userChoices[index];
-    const correctAnswerIndex = question[5];
-    const isCorrect = userAnswerIndex === correctAnswerIndex;
-    resultsHTML += `<div class="answer ${
-      isCorrect ? "correct-answer" : "incorrect-answer"
-    }">
-                      <p><strong>Question ${index + 1}:</strong> ${
-      question[0]
-    }</p>
-                      <p>Your Answer: ${question[userAnswerIndex + 1]}</p>
-                      <p>Correct Answer: ${question[correctAnswerIndex + 1]}</p>
-                    </div>`;
-  });
-  allAnswersContainer.innerHTML = resultsHTML;
-  scoreDisplayElement.textContent = `Your Score: ${score} / ${quizData.length}`;
-}
-
-function displayAnswersInModal() {
-  let modalAnswersHTML = "";
-  quizData.forEach((question, index) => {
-    const userAnswerIndex = userChoices[index];
-    const correctAnswerIndex = question[5];
-    const isCorrect = userAnswerIndex === correctAnswerIndex;
-    modalAnswersHTML += `<div class="answer ${
-      isCorrect ? "correct-answer" : "incorrect-answer"
-    }">
-                          <p><strong>Question ${index + 1}:</strong> ${
-      question[0]
-    }</p>
-                          <p>Your Answer: ${question[userAnswerIndex + 1]}</p>
-                          <p>Correct Answer: ${
-                            question[correctAnswerIndex + 1]
-                          }</p>
-                        </div>`;
-  });
-  modalAnswersElement.innerHTML = modalAnswersHTML;
-}
-
-function restartQuiz() {
+function resetQuiz() {
   currentQuestionIndex = 0;
-  userChoices = [];
   score = 0;
-  timerSeconds = 60;
-  clearInterval(timerInterval);
-  timerElement.textContent = timerSeconds;
+  timeLeft = quizTimeInSeconds;
   resultsContainer.style.display = "none";
   viewAnswersButton.style.display = "none";
-  submitButton.style.display = "inline-block";
-  restartButton.style.display = "inline-block";
-  initializeQuiz();
+  clearInterval(timerInterval);
+  timerElement.textContent = timeLeft;
+}
+
+function showQuestion() {
+  const currentQuestion = quizData[currentQuestionIndex];
+  questionTextElement.textContent = currentQuestion[0];
+  choicesContainerElement.innerHTML = "";
+  for (let i = 1; i <= 4; i++) {
+    const choice = document.createElement("button");
+    choice.textContent = currentQuestion[i];
+    choice.classList.add("choice");
+    choice.addEventListener("click", handleAnswerClick);
+    choicesContainerElement.appendChild(choice);
+  }
+}
+
+function handleAnswerClick(event) {
+  const selectedChoice = event.target;
+  const correctIndex = quizData[currentQuestionIndex][5];
+  const selectedIndex = Array.from(choicesContainerElement.children).indexOf(
+    selectedChoice
+  );
+
+  if (selectedIndex === correctIndex) {
+    selectedChoice.style.backgroundColor = "#28a745";
+    score++;
+    correctSound.play();
+  } else {
+    selectedChoice.style.backgroundColor = "#dc3545";
+    incorrectSound.play();
+  }
+
+  disableChoices();
+  if (currentQuestionIndex === quizData.length - 1) {
+    endQuiz();
+  } else {
+    currentQuestionIndex++;
+    setTimeout(showQuestion, 1000);
+  }
+}
+
+function disableChoices() {
+  const choices = Array.from(choicesContainerElement.children);
+  choices.forEach((choice) => {
+    choice.disabled = true;
+    if (choice.textContent !== quizData[currentQuestionIndex][quizData[currentQuestionIndex][5] + 1]) {
+      choice.style.backgroundColor = "#dc3545";
+    }
+  });
 }
 
 function startTimer() {
   timerInterval = setInterval(() => {
-    timerSeconds--;
-    timerElement.textContent = timerSeconds;
-    if (timerSeconds === 0) {
+    timeLeft--;
+    timerElement.textContent = timeLeft;
+    if (timeLeft === 0) {
       clearInterval(timerInterval);
-      timerHintElement.textContent = "Time's up!";
-      timerHintElement.style.color = "red";
+      timeoutSound.play();
       endQuiz();
     }
   }, 1000);
 }
 
-function playSound(soundType) {
-  switch (soundType) {
-    case "correct":
-      correctSound.play();
-      break;
-    case "incorrect":
-      incorrectSound.play();
-      break;
-    default:
-      break;
+function endQuiz() {
+  clearInterval(timerInterval);
+  resultsContainer.style.display = "block";
+  scoreDisplayElement.textContent = `You scored ${score} out of ${quizData.length}`;
+  if (currentQuestionIndex === quizData.length) {
+    viewAnswersButton.style.display = "inline-block";
   }
 }
-playSound();
 
-initializeQuiz();
-
-viewAnswersButton.addEventListener("click", function () {
+function viewAnswers() {
+  modalAnswersElement.innerHTML = "";
+  quizData.forEach((question, index) => {
+    const answerItem = document.createElement("p");
+    const questionText = question[0];
+    const correctAnswer = question[question[5] + 1];
+    answerItem.textContent = `${index + 1}. ${questionText} - ${correctAnswer}`;
+    modalAnswersElement.appendChild(answerItem);
+  });
   answersModal.style.display = "block";
-  displayAnswersInModal();
-});
+}
 
-closeBtn.addEventListener("click", function () {
+function closeModal() {
   answersModal.style.display = "none";
-});
+}
 
-window.addEventListener("click", function (event) {
-  if (event.target === answersModal) {
-    answersModal.style.display = "none";
-  }
-});
+restartButton.addEventListener("click", startQuiz);
+viewAnswersButton.addEventListener("click", viewAnswers);
+document.querySelector(".close").addEventListener("click", closeModal);
 
-submitButton.addEventListener("click", endQuiz);
-restartButton.addEventListener("click", restartQuiz);
-choiceButton.addEventListener("click", handleChoice);
+startQuiz();

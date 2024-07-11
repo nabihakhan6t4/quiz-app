@@ -1,3 +1,4 @@
+/* Reset and general styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,6 +8,7 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+  line-height: 1.6;
 }
 
 .container {
@@ -15,28 +17,21 @@ body {
   padding: 20px;
 }
 
-nav {
+header {
   background-color: #333;
   color: #fff;
   padding: 10px 0;
 }
 
-nav .container {
+header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-nav h1 {
-  font-size: 1.5rem;
-  margin-left: 20px;
-}
-
 nav ul {
   list-style-type: none;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 nav ul li {
@@ -55,28 +50,32 @@ nav ul li a:hover {
   background-color: #555;
 }
 
-h2 {
-  text-align: center;
-  margin: 20px 0;
-  color: #333;
+main {
+  margin-top: 20px;
 }
 
-.question-container {
+#quiz {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
 }
 
-.question-text {
-  font-size: 1.2em;
-  margin-bottom: 10px;
+#quiz-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.question-container {
+  margin-bottom: 20px;
 }
 
 .choices-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
 }
 
@@ -85,17 +84,16 @@ h2 {
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .choice:hover {
-  background: #333333;
+  background-color: #007bff;
   color: white;
 }
 
 .submit-button,
-.restart-button,
-.view-answers-button {
+.restart-button {
   margin-top: 10px;
   padding: 10px 20px;
   border: none;
@@ -107,20 +105,13 @@ h2 {
 }
 
 .submit-button:hover,
-.restart-button:hover,
-.view-answers-button:hover {
+.restart-button:hover {
   background-color: #0056b3;
 }
 
 .results-container {
   display: none;
   margin-top: 20px;
-}
-
-.timer-hint {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 0.9em;
 }
 
 .modal {
@@ -131,33 +122,41 @@ h2 {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; /* Center modal vertically and horizontally */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
-}
-
-.modal-content h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+  max-width: 80%; /* Adjust width as needed */
+  position: relative;
 }
 
 .close {
   color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 30px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
+.close:hover {
+  color: #333; /* Darker on hover for better visibility */
+}
+
+@media (max-width: 768px) {
+  .choices-container {
+    grid-template-columns: repeat(1, 1fr); /* Stack choices vertically on smaller screens */
+  }
+
+  .modal-content {
+    max-width: 90%; /* Adjust modal width for smaller screens */
+  }
 }
