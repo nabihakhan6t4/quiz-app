@@ -87,6 +87,7 @@ const timerHintElement = document.getElementById("timer-hint");
 const scoreDisplayElement = document.getElementById("score-display");
 const answersModal = document.getElementById("answers-modal");
 const modalAnswersElement = document.getElementById("modal-answers");
+const progressBar = document.getElementById("progress-bar"); // Progress bar element
 
 const correctSound = document.getElementById("correct-sound");
 const incorrectSound = document.getElementById("incorrect-sound");
@@ -100,6 +101,7 @@ let timerInterval;
 
 function startQuiz() {
   resetQuiz();
+  shuffleQuizData(); // Shuffle quiz data before starting
   showQuestion();
   startTimer();
 }
@@ -112,6 +114,14 @@ function resetQuiz() {
   viewAnswersButton.style.display = "none";
   clearInterval(timerInterval);
   timerElement.textContent = timeLeft;
+  progressBar.style.width = "0%"; // Reset progress bar width
+}
+
+function shuffleQuizData() {
+  for (let i = quizData.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizData[i], quizData[j]] = [quizData[j], quizData[i]];
+  }
 }
 
 function showQuestion() {
@@ -134,21 +144,27 @@ function handleAnswerClick(event) {
     selectedChoice
   );
 
+  // Disable other choices
+  disableChoices();
+
   if (selectedIndex === correctIndex) {
-    selectedChoice.style.backgroundColor = "#28a745";
+    selectedChoice.style.backgroundColor = "#28a745"; // Green for correct answer
     score++;
     correctSound.play();
   } else {
-    selectedChoice.style.backgroundColor = "#dc3545";
+    selectedChoice.style.backgroundColor = "#dc3545"; // Red for incorrect answer
     incorrectSound.play();
+
+    // Highlight correct answer
+    choicesContainerElement.children[correctIndex].style.backgroundColor =
+      "#28a745";
   }
 
-  disableChoices();
   if (currentQuestionIndex === quizData.length - 1) {
-    endQuiz();
+    setTimeout(endQuiz, 1000); // Delay showing results to allow visual feedback
   } else {
     currentQuestionIndex++;
-    setTimeout(showQuestion, 1000);
+    setTimeout(showQuestion, 1000); // Delay showing next question to allow visual feedback
   }
 }
 
@@ -156,7 +172,10 @@ function disableChoices() {
   const choices = Array.from(choicesContainerElement.children);
   choices.forEach((choice) => {
     choice.disabled = true;
-    if (choice.textContent !== quizData[currentQuestionIndex][quizData[currentQuestionIndex][5] + 1]) {
+    if (
+      choice.textContent !==
+      quizData[currentQuestionIndex][quizData[currentQuestionIndex][5] + 1]
+    ) {
       choice.style.backgroundColor = "#dc3545";
     }
   });
@@ -166,6 +185,9 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
     timerElement.textContent = timeLeft;
+    progressBar.style.width = `${
+      ((quizTimeInSeconds - timeLeft) / quizTimeInSeconds) * 100
+    }%`; // Update progress bar
     if (timeLeft === 0) {
       clearInterval(timerInterval);
       timeoutSound.play();

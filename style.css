@@ -84,12 +84,13 @@ main {
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Added transform transition */
 }
 
 .choice:hover {
   background-color: #007bff;
   color: white;
+  transform: scale(1.05); /* Example of subtle animation */
 }
 
 .submit-button,
@@ -159,4 +160,10 @@ main {
   .modal-content {
     max-width: 90%; /* Adjust modal width for smaller screens */
   }
+}
+
+.progress-bar {
+  width: 0%;
+  height: 10px;
+  background-color: #007bff;
 }
