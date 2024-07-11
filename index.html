@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Header -->
   <header>
     <div class="container">
       <h1>Kon Bnega Crorepati App</h1>
@@ -20,7 +21,9 @@
     </div>
   </header>
 
+  <!-- Main Content -->
   <main>
+    <!-- Quiz Section -->
     <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar -->
     <section id="quiz" class="container">
       <h2 id="quiz-title">Kon Bnega Crorepati Quiz</h2>
@@ -40,15 +43,19 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <div class="container">
       <p>&copy; 2024 Your Quiz App. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- Audio Elements -->
   <audio id="correct-sound" src="sounds/correct-answers.mp3"></audio>
   <audio id="incorrect-sound" src="sounds/incorrect-answers.wav"></audio>
   <audio id="timeout-sound" src="sounds/timer-clock.wav"></audio>
+
+  <!-- Answers Modal -->
   <div id="answers-modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -57,6 +64,7 @@
     </div>
   </div>
 
+  <!-- JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>

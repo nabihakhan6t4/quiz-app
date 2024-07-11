@@ -1,77 +1,14 @@
 const quizData = [
-  [
-    "Who discovered oxygen?",
-    "Karl Wilhelm Scheele",
-    "Michael Jackson",
-    "Shahrukh Khan",
-    "Hema Malini",
-    0,
-  ],
-  [
-    "What is the capital of Australia?",
-    "Sydney",
-    "Melbourne",
-    "Canberra",
-    "Perth",
-    2,
-  ],
-  [
-    "Which planet is known as the 'Morning Star'?",
-    "Mars",
-    "Venus",
-    "Jupiter",
-    "Saturn",
-    1,
-  ],
-  [
-    "Who wrote 'To Kill a Mockingbird'?",
-    "Harper Lee",
-    "Jane Austen",
-    "Mark Twain",
-    "J.K. Rowling",
-    0,
-  ],
-  [
-    "What is the largest ocean on Earth?",
-    "Atlantic Ocean",
-    "Indian Ocean",
-    "Arctic Ocean",
-    "Pacific Ocean",
-    3,
-  ],
+  ["Who discovered oxygen?", "Karl Wilhelm Scheele", "Michael Jackson", "Shahrukh Khan", "Hema Malini", 0],
+  ["What is the capital of Australia?", "Sydney", "Melbourne", "Canberra", "Perth", 2],
+  ["Which planet is known as the 'Morning Star'?", "Mars", "Venus", "Jupiter", "Saturn", 1],
+  ["Who wrote 'To Kill a Mockingbird'?", "Harper Lee", "Jane Austen", "Mark Twain", "J.K. Rowling", 0],
+  ["What is the largest ocean on Earth?", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean", 3],
   ["What is the square root of 64?", "6", "7", "8", "9", 2],
-  [
-    "Who developed the theory of relativity?",
-    "Isaac Newton",
-    "Galileo Galilei",
-    "Nikola Tesla",
-    "Albert Einstein",
-    3,
-  ],
-  [
-    "Which element has the chemical symbol 'O'?",
-    "Gold",
-    "Oxygen",
-    "Silver",
-    "Iron",
-    1,
-  ],
-  [
-    "Which is the longest river in the world?",
-    "Amazon River",
-    "Nile River",
-    "Yangtze River",
-    "Mississippi River",
-    1,
-  ],
-  [
-    "What is the tallest mountain in the world?",
-    "K2",
-    "Kangchenjunga",
-    "Lhotse",
-    "Mount Everest",
-    3,
-  ],
+  ["Who developed the theory of relativity?", "Isaac Newton", "Galileo Galilei", "Nikola Tesla", "Albert Einstein", 3],
+  ["Which element has the chemical symbol 'O'?", "Gold", "Oxygen", "Silver", "Iron", 1],
+  ["Which is the longest river in the world?", "Amazon River", "Nile River", "Yangtze River", "Mississippi River", 1],
+  ["What is the tallest mountain in the world?", "K2", "Kangchenjunga", "Lhotse", "Mount Everest", 3]
 ];
 
 const quizTitleElement = document.getElementById("quiz-title");
@@ -140,9 +77,7 @@ function showQuestion() {
 function handleAnswerClick(event) {
   const selectedChoice = event.target;
   const correctIndex = quizData[currentQuestionIndex][5];
-  const selectedIndex = Array.from(choicesContainerElement.children).indexOf(
-    selectedChoice
-  );
+  const selectedIndex = Array.from(choicesContainerElement.children).indexOf(selectedChoice);
 
   // Disable other choices
   disableChoices();
@@ -156,8 +91,7 @@ function handleAnswerClick(event) {
     incorrectSound.play();
 
     // Highlight correct answer
-    choicesContainerElement.children[correctIndex].style.backgroundColor =
-      "#28a745";
+    choicesContainerElement.children[correctIndex].style.backgroundColor = "#28a745";
   }
 
   if (currentQuestionIndex === quizData.length - 1) {
@@ -172,10 +106,7 @@ function disableChoices() {
   const choices = Array.from(choicesContainerElement.children);
   choices.forEach((choice) => {
     choice.disabled = true;
-    if (
-      choice.textContent !==
-      quizData[currentQuestionIndex][quizData[currentQuestionIndex][5] + 1]
-    ) {
+    if (choice.textContent !== quizData[currentQuestionIndex][quizData[currentQuestionIndex][5] + 1]) {
       choice.style.backgroundColor = "#dc3545";
     }
   });
@@ -185,9 +116,7 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
     timerElement.textContent = timeLeft;
-    progressBar.style.width = `${
-      ((quizTimeInSeconds - timeLeft) / quizTimeInSeconds) * 100
-    }%`; // Update progress bar
+    progressBar.style.width = `${((quizTimeInSeconds - timeLeft) / quizTimeInSeconds) * 100}%`; // Update progress bar
     if (timeLeft === 0) {
       clearInterval(timerInterval);
       timeoutSound.play();
